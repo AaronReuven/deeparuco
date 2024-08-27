@@ -169,6 +169,7 @@ if __name__ == "__main__":
     parser = ArgumentParser(description="DeepArUco v2 demo tool.")
     parser.add_argument("pic_path", help="input image path")
     parser.add_argument("out_path", help="path to store output")
+    parser.add_argument("vid_path", help="path to store output")
     parser.add_argument(
         "-d", "--detector", help="marker detector to use", default="det_luma_bc_s"
     )
@@ -370,7 +371,7 @@ if __name__ == "__main__":
 
     # cv2.imwrite(args.out_path, pic)
 
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(args.vid_path)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 5472)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 3648)
     if not cap.isOpened():
@@ -379,16 +380,18 @@ if __name__ == "__main__":
     while True:
         # Capture frame-by-frame
         ret, frame = cap.read()
-        frame = detect_and_output_image(frame, args)
+
+        test = detect_and_output_image(frame, args)
         # if frame is read correctly ret is True
         if not ret:
             print("Can't receive frame (stream end?). Exiting ...")
             break
         # Our operations on the frame come here
-        frame.resize((800,800))
-        # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # test.resize((800,800))
+        # new_test = np.resize(test, (800,800, 3))
+
         # Display the resulting frame
-        cv2.imshow('frame', frame)
+        cv2.imshow('frame', test)
         if cv2.waitKey(1) == ord('q'):
             break
 
